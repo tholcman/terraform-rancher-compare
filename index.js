@@ -16,7 +16,7 @@ stdin.on('data', function(chunk) {
 	rows.forEach(row => {
 		found = row.match(/(docker_compose|rancher_compose):( )+\"(.*)\" => \"(.*)\"$/)
 		if (found) {
-			console.log("\t" + found[1].trim().yellow);
+			console.log("\t" + found[1].yellow);
 			const origin = yaml.safeLoad(found[3].replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n"));
 			const newValue = yaml.safeLoad(found[4].replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n"));
 
@@ -32,8 +32,8 @@ stdin.on('data', function(chunk) {
 				origin,
 				diff.updatedDiff(origin, newValue)
 			).forEach(printMessage("yellow"));
-		} else {
-			console.log(row.trim());
+		} else if (row !== "") {
+			console.log(row);
 		}
 	});
 });
